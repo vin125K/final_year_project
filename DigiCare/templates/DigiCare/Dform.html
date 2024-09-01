@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .logo {
+            float: left;
+            margin-right: 20px;
+            margin-top: -20px;
+            width: 100px; /* Adjusted width */
+            height: auto; /* Adjusted height */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="{% static 'images/doctor.jpg' %}" alt="Logo" class="logo">
+    <h1>Prescription Form</h1>
+    <form method="post" action="{% url 'Dform' %}">
+        {% csrf_token %}
+        <input type="hidden" id="doctorUserName" name="doctorUserName" value="{{ request.user.username }}">
+
+        <label for="patientUserName">Patient Username:</label>
+        <input type="text" id="patientUserName" name="patientUserName" required>
+        
+        <label for="patientName">Patient Name:</label>
+        <input type="text" id="patientName" name="patientName" required>
+        
+        <label for="symptoms">Symptoms:</label>
+        <textarea id="symptoms" name="symptoms" rows="4" required></textarea>
+        
+        <label for="medicines">Medicines:</label>
+        <textarea id="medicines" name="medicines" rows="4" required></textarea>
+        
+        <label for="diet">Diet Recommendations:</label>
+        <textarea id="diet" name="diet" rows="4" required></textarea>
+        
+        <label for="tests">Recommended Tests:</label>
+        <textarea id="tests" name="tests" rows="4" required></textarea>
+        
+        <label for="description">Additional Description:</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+        
+        <input type="submit" value="Generate Prescription">
+    </form>
+</div>
+
+</body>
+</html>

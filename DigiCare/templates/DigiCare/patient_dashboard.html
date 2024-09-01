@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digicare. PatientDashBoard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --black: #171321;
+            --hotmag: #172eff;
+            --magenta: #108fe3;
+            --aqua: #86fbfb;
+            --white: #f7f8fa;
+            --font-size: 1.3rem;
+            --mono: "Oxygen mono", monospace;
+            --sans: Oxygen, sans-serif;
+        }
+        html {
+            box-sizing: border-box;
+        }
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: var(--mono);
+            color: var(--white);
+            font-size: var(--font-size);
+            background-color: var(--black); /* Set background color to black */
+        }
+        h1 {
+            margin: 0;
+            font-family: var(--sans);
+            font-size: 230%;
+        }
+        a:hover {
+            color: var(--hotmag);
+            text-decoration: none;
+        }
+        .gradient {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 23, 228, 1) 0%,
+                rgba(134, 251, 251, 1) 100%
+            );
+            height: 2px;
+        }
+        nav {
+            font-size: 80%;
+            padding: 4rem 1rem;
+            padding-top: 90px;
+        }
+        nav ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+        nav li:first-child {
+            flex-basis: 100%;
+            text-align: center;
+        }
+        nav [class*="fa-"] {
+            font-size: 150%;
+            color: var(--aqua);
+        }
+        nav h1 [class*="fa-"] {
+            font-size: 100%;
+            color: var(--aqua);
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+        nav a:hover,
+        nav [class*="fa-"]:hover {
+            color: var(--magenta);
+        }
+        .button {
+            background-color: var(--magenta);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: var(--mono);
+        }
+        .button:hover {
+            color: white;
+            background-color: var(--hotmag);
+        }
+        @media (min-width: 850px) {
+            nav {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            nav li:first-child {
+                flex-basis: auto;
+                text-align: left;
+                margin-right: auto;
+            }
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: inherit;
+            right: inherit;
+            bottom: 0;
+            z-index: -1;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: black; /* Set text color to black */
+        }
+
+        .card {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .heartbeat-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .heartbeat {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #heart-rate {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #ecg {
+            width: 100%;
+            height: 150px;
+            margin-top: 20px;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        #ecg-line {
+            stroke: red;
+            stroke-width: 1.5;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>
+                <h1>
+                    <a href="index.html">
+                        <span class="fa-solid fa-user" aria-hidden="true"></span>
+                        <span>Welcome, {{ user.username }}</span>
+                    </a>
+                </h1>
+            </li>
+            <li><a href="">Home</a></li>
+            <li><a href="#" id="recordsLink">Records</a></li>
+            <li><a href="">Vitals</a></li>
+            <li>
+                <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&ifkv=ARZ0qKJ8I8hG5L6z29iPUktRzYxHaQE77S0S0BlXZyaKzcimvtxJLulr_l41odd0jT8nFCKbg9kqgw&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-234007121%3A1711969657718856&theme=mn&ddm=0" target="blank">
+                    <span class="fab fa-envelope " aria-hidden="true"></span>
+                    <span class="sr-only">LinkedIn</span>
+                </a>
+            </li>
+
+        </ul>
+        <canvas id="canvas"></canvas>
+    </nav>
+    <div class="gradient"></div>
+    <div class="container" id="prescriptionFormsContainer" style="display:none;">
+        
+        <h2>Prescription Forms:</h2>
+        <ul>
+            {% for form in prescription_forms %}
+            <li>
+                <label>Doctor:</label> {{ form.doctorUserName }}<br>
+                <br> </br>
+                <label>Symptoms:</label> {{ form.symptoms }}<br>
+                <br> </br>
+                <label>Medicines:</label> {{ form.medicines }}<br>
+                <br> </br>
+                <label>Diet:</label> {{ form.diet }}<br>
+                <br> </br>
+                <label>Tests:</label> {{ form.tests }}<br>
+                <br> </br>
+                <label>Description:</label> {{ form.description }}<br>
+                <br> </br>
+                <label>Timestamp:</label> {{ form.timestamp }}<br>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="card">
+        <div class="heartbeat-container">
+            <img src="https://latestposting.com/wp-content/uploads/2023/12/Hear-Beat.gif" alt="Heartbeat" class="heartbeat">
+        </div>
+        <div id="heart-rate">Heart Rate: <span id="heart-rate-value"></span> {{  heart_rate_data.last.heart_rate }} bpm</div>
+        <svg id="ecg"></svg>
+    </div>
+
+    <script>
+        // Simulated ECG data
+        let ecgData = Array.from({ length: 100 }, () => Math.floor(Math.random() * 80) + 40);
+
+        // Draw ECG graph
+        const svg = document.getElementById('ecg');
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const ecgLine = document.createElementNS(svgNS, 'path');
+        ecgLine.setAttribute('id', 'ecg-line');
+        svg.appendChild(ecgLine);
+
+        const drawECG = () => {
+            const points = ecgData.map((dataPoint, index) => `${index * 5},${dataPoint}`).join(' ');
+            ecgLine.setAttribute('d', `M0,${ecgData[0]} ${points}`);
+        };
+
+        drawECG();
+
+        // Update ECG graph periodically
+        setInterval(() => {
+            ecgData = ecgData.slice(1);
+            ecgData.push(Math.floor(Math.random() * 80) + 40);
+            drawECG();
+        }, 100);
+
+
+
+        document.getElementById('recordsLink').addEventListener('click', function() {
+            var container = document.getElementById('prescriptionFormsContainer');
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+        });        
+
+
+
+ 
+
+
+
+
+
+
+    </script>
+</body>
+</html>

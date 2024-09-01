@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .logo {
+            float: left;
+            margin-right: 20px;
+            margin-top: -20px;
+            width: 100px; /* Adjusted width */
+            height: auto; /* Adjusted height */
+        }
+        .patient-list {
+            margin-top: 20px;
+            max-height: 400px; /* Adjust as needed */
+            overflow-y: auto;
+            position: relative;
+        }
+        .patient-details {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .search-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="{% static 'images/doctor.jpg' %}" alt="Logo" class="logo">
+        <h1>Welcome, {{ user.username }}</h1>
+    </div>
+    <div class="clear"></div>
+    
+    <div class="patient-list">
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="searchForms()" placeholder="Search by Patient Username...">
+        </div>
+        <h2>Submitted Forms:</h2>
+        {% for form in forms %}
+        <div class="patient-details">
+            <h3>{{ form.patientUserName }}</h3>
+            <p><strong>Symptoms:</strong> {{ form.symptoms }}</p>
+            <p><strong>Medicines:</strong> {{ form.medicines }}</p>
+            <p><strong>Diet Recommendations:</strong> {{ form.diet }}</p>
+            <p><strong>Recommended Tests:</strong> {{ form.tests }}</p>
+            <p><strong>Additional Description:</strong> {{ form.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>Add New Patient:</h2>
+    <button onclick="showForm()">New Patient</button>
+    
+    <div id="new-patient-form-container"></div>
+</div>
+
+<script>
+    function showForm() {
+        var container = document.getElementById('new-patient-form-container');
+        container.innerHTML = ''; // Clear previous content
+        fetch('/Dform/') // URL mapped to the view serving Dform.html
+            .then(response => response.text())
+            .then(data => {
+                container.innerHTML = data;
+            })
+            .catch(error => console.error('Error loading form:', error));
+    }
+
+    function searchForms() {
+        var input, filter, container, details, i, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        container = document.getElementsByClassName('patient-list')[0];
+        details = container.getElementsByClassName('patient-details');
+
+        for (i = 0; i < details.length; i++) {
+            txtValue = details[i].getElementsByTagName('h3')[0].textContent || details[i].getElementsByTagName('h3')[0].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                details[i].style.display = '';
+            } else {
+                details[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

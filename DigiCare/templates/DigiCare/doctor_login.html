@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+    <title>Patient_Login</title>
+    <link rel="stylesheet" href="{% static 'CSS/doctorlogincss.css' %}">
+</head>
+<body>
+    <div class="splash-container">
+        <div class="splash-image"></div>
+        <div class="mask"></div>
+    </div>
+    <div class="app-logo">
+        <img src="{% static 'images/logo.jpg' %}" alt="App Logo">
+    </div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="icon">
+                <img src="{% static 'images/logindoctorlogo.png' %}" alt="Icon">
+            </div>
+            <div class="loginlabel"> Login </div>
+            <form method="post" action="{% url 'doctor_login' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="login-btn">Login</button>
+                    
+                    <a href="{% url 'doctor_signup' %}" class="signup-btn">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

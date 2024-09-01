@@ -1,0 +1,224 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main {
+  --high-opacity: 1;
+  --low-opacity: 0.6;
+  --spiral-height: 100px;
+  --letter-gap: 10px;
+  --animation-duration: 5s;
+}
+
+.main {
+  background-color: #18032c;
+  color: #ffffff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  text-transform: uppercase;
+}
+
+/* Custom Property */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-span,
+.animated-span-2 {
+  display: flex;
+  align-items: center;
+  gap: var(--letter-gap);
+  position: absolute;
+}
+
+.animated-span span {
+  display: inline-block;
+  transform: translateY(calc(sin(var(--angle)) * var(--spiral-height)))
+    scale(calc(cos(var(--angle)) * 0.5 + 0.5));
+  animation: spiral var(--animation-duration) linear infinite;
+}
+
+.animated-span-2 span {
+  display: inline-block;
+  transform: translateY(calc(sin(var(--angle)) * var(--spiral-height)))
+    scale(calc(cos(var(--angle)) * 0.5 + 0.5));
+  animation: spiral var(--animation-duration) linear infinite;
+}
+
+@keyframes spiral {
+  0% {
+    --angle: 360deg;
+    opacity: var(--high-opacity);
+  }
+  100% {
+    --angle: 0deg;
+    opacity: var(--low-opacity);
+  }
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sidebar.doctor {
+  left: 50px;
+}
+
+.sidebar.patient {
+  right: 50px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #0ff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 20px #0ff;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.login-button {
+  padding: 10px 20px;
+  background-color: #0ff;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #00e6e6;
+}
+
+header {
+  background-color: #f0f0f0; /* Light background color */
+  color: #18032c; /* Text color */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.logo img {
+  max-height: 80px; /* Increased size for the logo */
+  max-width: auto;
+  display: block;
+  margin: 0 auto; /* Center the logo */
+}
+
+.company-name {
+  flex-grow: 1; /* Fill remaining space in the header */
+  text-align: center; /* Center the company name */
+}
+
+.company-name h1 {
+  font-size: 28px; /* Increased font size */
+}
+
+.main {
+  background-color: #18032c;
+  color: #ffffff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  text-transform: uppercase;
+}
+
+.box h2 {
+  color: #0ff; /* Neon color */
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+}
+
+.dropdown-menu li a {
+  text-decoration: none;
+  color: white;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f0f0f0;
+  color: black;	
+}
+
+nav ul li {
+  display: inline-block; /* Change to inline-block */
+  position: relative;
+}
+
+nav ul li a {
+  display: inline-block; /* Ensure the anchor tags fill the space */
+  padding: 10px 20px; /* Add padding to create space around the text */
+  background-color: 	 #00004d; /* Background color */
+  color: white;
+  border-radius: 5px; /* Curved borders */
+}
+
+
+
+.company-name {
+  font-size: 60px;
+  font-weight: bold;
+  background-image: url('https://leadership.ng/wp-content/uploads/2022/11/healthcare-Medicare-jpg.webp'); /* Replace with your background image */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+}
+
+
+
+
+

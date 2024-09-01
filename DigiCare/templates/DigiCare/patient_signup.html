@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+        #passwordField {
+            width: 100%;
+            height: 40px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Patient Signup</h2>
+    <form method="post" action="{% url 'patient_signup' %}">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+        <!-- Visual Verification Section -->
+        <div>
+            <label for="visualVerification">Visual Verification:</label>
+            <input type="text" id="visualVerification" name="visualVerification" readonly>
+            <div id="numberGrids" class="grid"></div>
+        </div>
+        <!-- End Visual Verification Section -->
+
+        <input type="submit" value="Sign Up">
+    </form>
+</div>
+
+<script>
+    // Define your numbers and their colors here
+    const numbers = [
+        { number: 1, colors: ["red", "blue", "green"] },
+        { number: 2, colors: ["yellow", "orange", "purple"] },
+        { number: 3, colors: ["cyan", "magenta", "pink"] },
+        { number: 4, colors: ["brown", "black", "gray"] },
+        { number: 5, colors: ["lightblue", "lightgreen", "lightyellow"] },
+    ];
+
+    // Function to create grids for each number
+    function createGrids() {
+        const numberGrids = document.getElementById('numberGrids');
+        numbers.forEach(item => {
+            const gridContainer = document.createElement('div');
+            gridContainer.classList.add('grid');
+            gridContainer.id = `grid-${item.number}`;
+            item.colors.forEach(color => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.style.backgroundColor = color;
+                card.innerText = item.number;
+                card.onclick = function() {
+                    addToVisualVerification(item.number, color);
+                };
+                gridContainer.appendChild(card);
+            });
+            numberGrids.appendChild(gridContainer);
+        });
+    }
+
+    // Function to add selected number and color to the visual verification field
+    function addToVisualVerification(number, color) {
+        const visualVerificationField = document.getElementById('visualVerification');
+        const currentVisualVerification = visualVerificationField.value;
+        const newVisualVerification = currentVisualVerification + number + '-' + color + ' ';
+        visualVerificationField.value = newVisualVerification;
+    }
+
+    // Call createGrids function on page load
+    window.onload = createGrids;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!-- patient_login.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+    <title>Patient_Login</title>
+    <link rel="stylesheet" href="{% static 'CSS/patientlogincss.css' %}">
+    <style>
+        /* Add your custom CSS styles for visual verification here */
+        /* You may need to adjust the styles to fit your design */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .card {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="splash-container">
+        <div class="splash-image"></div>
+        <div class="mask"></div>
+    </div>
+    <div class="app-logo">
+        <img src="{% static 'images/logo.jpg' %}" alt="App Logo">
+    </div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="icon">
+                <img src="{% static 'images/loginpatientlogo.png' %}" alt="Icon">
+            </div>
+            <div class="loginlabel">Login</div>
+            <form method="post" action="{% url 'patient_login' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <!-- Visual Verification Section -->
+                <div class="input-group">
+                    <label for="visualVerification">Visual Verification:</label>
+                    <input type="text" id="visualVerification" name="visualVerification" readonly>
+                    <div id="numberGrids" class="grid"></div>
+                </div>
+                <!-- End Visual Verification Section -->
+                
+                <div class="button-group">
+                    <button type="submit" class="login-btn">Login</button>
+                    <a href="{% url 'patient_signup' %}" class="signup-btn">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Define your numbers and their colors here
+        const numbers = [
+            { number: 1, colors: ["red", "blue", "green"] },
+            { number: 2, colors: ["yellow", "orange", "purple"] },
+            { number: 3, colors: ["cyan", "magenta", "pink"] },
+            { number: 4, colors: ["brown", "black", "gray"] },
+            { number: 5, colors: ["lightblue", "lightgreen", "lightyellow"] },
+        ];
+
+        // Function to create grids for each number
+        function createGrids() {
+            const numberGrids = document.getElementById('numberGrids');
+            numbers.forEach(item => {
+                const gridContainer = document.createElement('div');
+                gridContainer.classList.add('grid');
+                gridContainer.id = `grid-${item.number}`;
+                item.colors.forEach(color => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.style.backgroundColor = color;
+                    card.innerText = item.number;
+                    card.onclick = function() {
+                        addToVisualVerification(item.number, color);
+                    };
+                    gridContainer.appendChild(card);
+                });
+                numberGrids.appendChild(gridContainer);
+            });
+        }
+
+        // Function to add selected number and color to the visual verification field
+        function addToVisualVerification(number, color) {
+            const visualVerificationField = document.getElementById('visualVerification');
+            const currentVisualVerification = visualVerificationField.value;
+            const newVisualVerification = currentVisualVerification + number + '-' + color + ' ';
+            visualVerificationField.value = newVisualVerification;
+        }
+
+        // Call createGrids function on page load
+        window.onload = createGrids;
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/logo.jpg' %}">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'CSS/homecss.css' %}">
+  <title>DIGI-CARE</title>
+</head>
+<body>
+  <div class="sidebar doctor">
+    <div class="box">
+      <h2>Doctor</h2>
+      <img src="{% static 'images/doctor.jpg' %}" alt="Doctor Logo" class="logo">
+      <a href="{% url 'doctor_login' %}" class="login-button">Login</a>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo">
+      <img src="{% static 'images/logo.jpg' %}" alt="Company Logo">
+    </div>
+    <div class="company-name">
+      DIGI-CARE
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Report</a></li>
+        <li class="dropdown">
+          <a href="#">Hospitals &#9662;</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Hospital 1</a></li>
+            <li><a href="#">Hospital 2</a></li>
+            <li><a href="#">Hospital 3</a></li>
+            <!-- Add more hospitals as needed -->
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="main">
+    <span class="animated-span-2">DIGI-CARE  100% CONFIDENTIAL</span>
+    <span class="animated-span">DIGI-CARE  100% CONFIDENTIAL</span>
+  </div>
+
+  <div class="sidebar patient">
+    <div class="box">
+      <h2>Patient</h2>
+      <img src="{% static 'images/patient.png' %}" alt="Patient Logo" class="logo">
+      <a href="{% url 'patient_login' %}" class="login-button">Login</a>
+    </div>
+  </div>
+
+  <script src="{% static 'js/homejs.js' %}"></script>
+</body>
+</html>
